@@ -2,7 +2,7 @@ var createApp = require( '../createDefaultApp' );
 var request = require( './request' );
 var assert = require( 'assert' );
 
-describe( 'The Pokemock server (with memory module)', function () {
+describe( 'The Kunware server (with memory module)', function () {
 
   var url = 'http://localhost:7374';
   var server;
