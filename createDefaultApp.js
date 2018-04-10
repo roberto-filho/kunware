@@ -1,7 +1,7 @@
 var express = require( 'express' );
-var pokemock = require( './' );
-var generate = pokemock.generate;
-var generate2 = pokemock.generate2;
+var kunware = require( './' );
+var generate = kunware.generate;
+var generate2 = kunware.generate2;
 
 module.exports = createDefaultApp;
 
@@ -10,18 +10,18 @@ function createDefaultApp( apis, options ) {
   options = options || {};
   var app = express();
 
-  app.get( '/api-docs', pokemock.apiDocs( apis ) );
-  app.use( '/ui', pokemock.ui );
+  app.get( '/api-docs', kunware.apiDocs( apis ) );
+  app.use( '/ui', kunware.ui );
 
-  if ( options.killable ) app.use( '/kill', pokemock.kill );
+  if ( options.killable ) app.use( '/kill', kunware.kill );
 
   app.use(
-    pokemock.swagger( apis, app ),
-    pokemock.replay(),
-    pokemock.chance,
-    pokemock.time,
-    pokemock.status,
-    pokemock.mock( [
+    kunware.swagger( apis, app ),
+    kunware.replay(),
+    kunware.chance,
+    kunware.time,
+    kunware.status,
+    kunware.mock( [
       generate.id,
       generate2.birthday,
       generate2.email,
@@ -46,20 +46,20 @@ function createDefaultApp( apis, options ) {
       generate.array,
       generate.object
     ] ),
-    pokemock.override
+    kunware.override
   );
 
   if ( options.memory ) {
     app.use(
-      pokemock.classify,
-      pokemock.memory( options )
+      kunware.classify,
+      kunware.memory( options )
     );
   }
 
   app.use(
-    pokemock.send,
-    pokemock.notFound,
-    pokemock.sendError
+    kunware.send,
+    kunware.notFound,
+    kunware.sendError
   );
 
   return app;
