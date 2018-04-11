@@ -1,5 +1,13 @@
 # Kunware
 
+[![npm version](https://badge.fury.io/js/kunware.svg)](https://badge.fury.io/js/kunware)
+[![Build Status](https://travis-ci.org/kalibrr/kunware.svg?branch=master)](https://travis-ci.org/kalibrr/kunware)
+[![Build status](https://ci.appveyor.com/api/projects/status/99t014h947hf4q5r/branch/master?svg=true)](https://ci.appveyor.com/project/jgjadaoag/kunware/branch/master)
+[![Coverage Status](https://coveralls.io/repos/github/kalibrr/kunware/badge.svg?branch=master)](https://coveralls.io/github/kalibrr/kunware?branch=master)
+[![Dependency Status](https://david-dm.org/kalibrr/kunware.svg)](https://david-dm.org/kalibrr/kunware)
+[![devDependency Status](https://david-dm.org/kalibrr/kunware/dev-status.svg)](https://david-dm.org/kalibrr/kunware?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/kalibrr/kunware/badge.svg)](https://snyk.io/test/github/kalibrr/kunware)
+
 A fork of pokemock with options for developer convenience.
 The Kunware package generates a mock server from one or more arbitrary
 Swagger files with supports seeding, timeouts, response picking,

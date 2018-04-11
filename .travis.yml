@@ -1,0 +1,16 @@
+sudo: false
+dist: "trusty"
+language: "node_js"
+cache:
+  directories:
+    - "node_modules"
+jobs:
+  include:
+    - stage: "Run eslint"
+      node_js: "node"
+      script: "npm run lint"
+    - stage: "tests & code coverage"
+      node_js: "lts/*"
+      script: "npm run test:coverage && npm run coveralls"
+    - node_js: "node"
+      script: "npm run test:coverage && npm run coveralls"

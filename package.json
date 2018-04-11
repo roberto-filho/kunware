@@ -14,7 +14,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha test"
+    "lint": "bash -c 'shopt -s globstar; node_modules/eslint/bin/eslint.js -c .eslintrc.yml lib/**/*.js test/**/*.js bin/kunware *.js'",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha test",
+    "test:coverage": "rm -rf ./coverage; node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test"
   },
   "dependencies": {
     "chance": "^1.0.6",
@@ -29,6 +32,7 @@
     "swagger-ui": "^2.2.10"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "istanbul": "^0.4.5",
