@@ -9,3 +9,5 @@ rules:
           ignoreUrls: true
     new-cap:
         - 0
+    require-jsdoc:
+        - 0

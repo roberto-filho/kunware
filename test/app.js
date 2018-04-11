@@ -85,6 +85,32 @@ describe( 'The Kunware server', function() {
     } );
   } );
 
+  it( 'should respond with the example', function() {
+    return request(url + '/v2/pet/4', {
+      headers: {
+        'X-Mock-Example': 'enabled',
+        'api_key': 'siegmeyer',
+      },
+      json: true,
+    }).then(function(res) {
+      assert.equal(res.body.name, 'Jake');
+      assert.equal(res.body.photoUrls.length, 0);
+    });
+  });
+
+  it( 'should throw an error with enabled example but missing schema example', function() {
+    return request(url + '/v2/user/someuser', {
+      headers: {
+        'X-Mock-Example': 'enabled',
+        'api_key': 'siegmeyer',
+      },
+      json: true,
+    }).then(function(res) {
+      assert.equal(res.statusCode, 500);
+      assert.equal(res.body.message, 'No schema example found for path /v2/user/someuser');
+    });
+  });
+
   it( 'should replay X-Mock-* headers', function() {
     return request( url + '/v2/pet/4', {
       headers: {
