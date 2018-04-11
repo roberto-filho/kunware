@@ -1,14 +1,13 @@
-var express = require( 'express' );
-var kunware = require( './' );
-var generate = kunware.generate;
-var generate2 = kunware.generate2;
+let express = require( 'express' );
+let kunware = require( './' );
+let generate = kunware.generate;
+let generate2 = kunware.generate2;
 
 module.exports = createDefaultApp;
 
 function createDefaultApp( apis, options ) {
-
   options = options || {};
-  var app = express();
+  let app = express();
 
   app.get( '/api-docs', kunware.apiDocs( apis ) );
   app.use( '/ui', kunware.ui );
@@ -44,7 +43,7 @@ function createDefaultApp( apis, options ) {
       generate.integer,
       generate.boolean,
       generate.array,
-      generate.object
+      generate.object,
     ] ),
     kunware.override
   );
@@ -63,5 +62,4 @@ function createDefaultApp( apis, options ) {
   );
 
   return app;
-
 }
