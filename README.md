@@ -5,10 +5,9 @@ The Kunware package generates a mock server from one or more arbitrary
 Swagger files with supports seeding, timeouts, response picking,
 entity memory, semantic action inference, etc.
 
-
 ## Usage
 
-```
+```nil
 Syntax:
   kunware <swagger-urls-or-files> ... [-h] [-v] [-w] [-p <port>]
 
@@ -21,14 +20,12 @@ Options:
       --memory      Enable memory module (experimental)
 ```
 
-
 ## Server
 
 The mock server listens to the specified port and
 mocks endpoints defined in the provided Swagger document.
 Additionally, it publishes a Swagger UI under `/ui`,
 the Swagger API under `/api-docs` and a `/kill` endpoint for shutdown.
-
 
 ## Request Headers
 
@@ -52,6 +49,9 @@ Using optional headers, clients can control the server's behavior:
 - __X-Mock-Depth__
   - Specifies the maximum JSON data depth
   - Defaults to 5
+- __X-Mock-Example__
+  - Specifies if the response should use the example in the top level schema
+  - Defaults to `disabled` and turned on with `enabled`
 - __X-Mock-Override__
   - Specifies response data via [JSON Path](https://github.com/dchester/jsonpath)
   - Must be a valid JSON object of `<jsonPath>: <data>` pairs
@@ -62,7 +62,6 @@ Using optional headers, clients can control the server's behavior:
 - __X-Mock-Replay-Pattern__
   - Specifies a regular expression to match for X-Mock-Replay
   - If omitted, the exact path is used for replaying
-
 
 ## Memory (experimental)
 
@@ -81,7 +80,6 @@ such as:
 
 These actions are applied to known entities in memory.
 For example, requesting a deleted entity will result in a 404 response.
-
 
 ## Customization
 

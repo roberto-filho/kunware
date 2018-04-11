@@ -3,7 +3,7 @@
 let kunware = require( '../' );
 let createApp = require( '../createDefaultApp' );
 
-kunware.dispatch( process.argv.slice( 2 ), createApp ).catch( function ( err ) {
+kunware.dispatch( process.argv.slice( 2 ), createApp ).catch( function( err ) {
   console.log( err.stack );
   process.exit( 1 );
 } );
