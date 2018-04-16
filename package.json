@@ -23,6 +23,7 @@
     "chance": "^1.0.6",
     "express": "^4.15.2",
     "fast-levenshtein": "^2.0.6",
+    "js-yaml": "^3.11.0",
     "json-schema-ref-parser": "^3.1.2",
     "jsonpath": "^0.2.11",
     "lodash": "^4.17.4",
@@ -37,7 +38,9 @@
     "eslint-config-google": "^0.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "rewire": "^4.0.0",
+    "sinon": "^4.5.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

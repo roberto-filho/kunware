@@ -20,12 +20,15 @@ Syntax:
   kunware <swagger-urls-or-files> ... [-h] [-v] [-w] [-p <port>]
 
 Options:
-  -h, --help        Show help
-  -v, --version     Show version
-  -p, --port <port> Set server port, default is 8000
-  -w, --watch       Watch mode: Restart on Swagger changes
-  -k, --killable    Publish /kill endpoint to stop the service
-      --memory      Enable memory module (experimental)
+  -h, --help                 Show help
+  -v, --version              Show version
+  -p, --port <port>          Set server port, default is 8000
+  -w, --watch                Watch mode: Restart on Swagger changes
+  -k, --killable             Publish /kill endpoint to stop the service
+      --config <config file> YAML file containing the configuration (default is config.yaml if it exists)
+      --example <enabled|disabled|preferably>
+                             Whether to use the examples or not or to use example if there is one
+      --memory               Enable memory module (experimental)
 ```
 
 ## Server
