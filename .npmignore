@@ -1,0 +1,6 @@
+node_modules
+npm-debug.log
+examples/java/target
+coverage
+reports
+test
