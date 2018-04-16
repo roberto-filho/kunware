@@ -10,9 +10,9 @@ function createDefaultApp( apis, options ) {
   let app = express();
 
   app.get( '/api-docs', kunware.apiDocs( apis ) );
-  app.use( '/ui', kunware.ui );
+  if (options.ui !== false) app.use( '/ui', kunware.ui );
 
-  if ( options.killable ) app.use( '/kill', kunware.kill );
+  if ( options.killable || options.k ) app.use( '/kill', kunware.kill );
 
   app.use(
     kunware.swagger( apis, app ),
@@ -44,7 +44,7 @@ function createDefaultApp( apis, options ) {
       generate.boolean,
       generate.array,
       generate.object,
-    ] ),
+    ], options ),
     kunware.override
   );
 
