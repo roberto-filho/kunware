@@ -27,7 +27,7 @@ Options:
   -k, --killable             Publish /kill endpoint to stop the service
       --config <config file> YAML file containing the configuration (default is config.yaml if it exists)
       --example <enabled|disabled|preferably>
-                             Wether to use the examples or not or to use example if there is one
+                             Whether to use the examples or not or to use example if there is one
       --memory               Enable memory module (experimental)
 ```
 

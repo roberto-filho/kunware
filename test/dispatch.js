@@ -37,11 +37,24 @@ describe( 'The dispatcher', function() {
           '_': ['api_spec.json'], 'config': 'test/config.yaml', 'example': 'enabled', 'bar': true, 'foo': 'foobar',
         });
       });
+
       it('should not overwrite CLI arguments', function() {
         let configuration = dispatch(['api_spec.json', '--example=disabled', '--no-ui', '--foo', 'bar', '--config=test/config.yaml'], null);
         assert.deepStrictEqual(configuration, {
           '_': ['api_spec.json'], 'config': 'test/config.yaml', 'example': 'disabled', 'ui': false, 'foo': 'bar', 'bar': true,
         });
+      });
+
+      it('should throw an error for non existent file', function() {
+        assert.throws(function() {
+          dispatch(['api_spec.json', '--config=test/conffig.yaml'], null);
+        }, /does not exist/);
+      });
+
+      it('should throw an error for non file configs', function() {
+        assert.throws(function() {
+          dispatch(['api_spec.json', '--config=test'], null);
+        }, /is not a file/);
       });
     });
 

@@ -16,7 +16,7 @@ describe( 'The Kunware server', function() {
     server = createApp( 'test/petstore.json' ).listen( 7373 );
   } );
 
-  it( 'should handle unfound paths', function() {
+  it( 'should handle non existent paths', function() {
     return request( url + '/siegmeyer', options ).then( function( res ) {
       assert.ok( res.body.message.match( /not found/i ) );
       assert.equal( res.statusCode, 404 );
