@@ -20,6 +20,7 @@
     "test:coverage": "rm -rf ./coverage; node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "chance": "^1.0.6",
     "express": "^4.15.2",
     "fast-levenshtein": "^2.0.6",

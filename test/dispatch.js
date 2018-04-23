@@ -1,21 +1,21 @@
-let assert = require( 'assert' );
+let assert = require('assert');
 let rewire = require('rewire');
 let sinon = require('sinon');
 
-let dispatch = rewire( '../lib/dispatch' );
+let dispatch = rewire('../lib/dispatch');
 
-describe( 'The dispatcher', function() {
-  it( 'should report usage', function() {
-    return dispatch( [], null );
-  } );
+describe('The dispatcher', function() {
+  it('should report usage', function() {
+    return dispatch([], null);
+  });
 
-  it( 'should have a version option', function() {
-    return dispatch( ['-v'], null );
-  } );
+  it('should have a version option', function() {
+    return dispatch(['-v'], null);
+  });
 
-  it( 'should have a help option', function() {
-    return dispatch( ['-h'], null );
-  } );
+  it('should have a help option', function() {
+    return dispatch(['-h'], null);
+  });
 
   describe('configuration', function() {
     let serveSpy = sinon.stub().returnsArg(0);
@@ -62,4 +62,4 @@ describe( 'The dispatcher', function() {
       serveRevert();
     });
   });
-} );
+});
