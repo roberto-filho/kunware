@@ -33,6 +33,10 @@
         border-width: 0 0 1px ;
         font-size: 16px;
     }
+    input:invalid {
+        color: red;
+        border-color: rgba(255,0,0,0.5);
+    }
     option {
         background-color: inherit;
     }
@@ -64,6 +68,7 @@
         <div class="input">
             <label for="example">Use Example:</label>
             <select class="text" name="example" id="example-input">
+                <option value="">Unset</option>
                 <option value="enabled">Enabled</option>
                 <option value="disabled">Disabled</option>
                 <option value="preferably">Preferably</option>
@@ -76,6 +81,7 @@
         <div class="input"><button type="submit" id="submit-button">Submit</button></div>
     </form>
     <script>
+        'use strict';
         // (function() {
         let configPath = '';
         let config = {};
@@ -84,50 +90,64 @@
             configPath = window.location.pathname.replace('config/ui', 'config');
             document.getElementById('main-config').onsubmit = (event) => {
                 event.preventDefault();
-                submitButton = document.getElementById('submit-button');
+                let submitButton = document.getElementById('submit-button');
                 submitButton.disabled = true;
                 fetch(`http://${window.location.host}${configPath}`, {
                     body: JSON.stringify(config),
                     headers: {'content-type': 'application/json'},
                     method: 'POST'
                 }).then(response => response.json())
-                .then(json => {alert(json);submitButton.disabled = false});
+                .then(json => {
+                    alert(`${json.set} values set, ${json.unset} values not set.`);
+                    configList.forEach((configItem) => {
+                        if (json.config[configItem.name]) {
+                            config[configItem.name] = json.config[configItem.name];
+                        } else {
+                            delete config[configItem.name]
+                        }
+                    })
+                    submitButton.disabled = false
+                });
             }
-            fetchConfig = fetch(`http://${window.location.host}${configPath}`)
+            let fetchConfig = fetch(`http://${window.location.host}${configPath}`)
                 .then((response) => response.json())
                 .then((configJSON) => config = configJSON);
-            fetchConfigList = fetch(`http://${window.location.host}${configPath}list`)
+            let fetchConfigList = fetch(`http://${window.location.host}${configPath}list`)
                 .then((response) => response.json())
                 .then((configListJSON) => configList = configListJSON);
 
             function inputValidator(input, configItem) {
                 return () => {
-                    if (input.value && configItem.validator(input.value)) {
-                        config[configItem.name] = input.value;
-                    } else {
+                    let value;
+                    try {
+                        switch (String(configItem.type)) {
+                            case 'number':
+                                value = parseFloat(input.value);
+                                break;
+                            case 'object':
+                                value = JSON.parse(input.value);
+                                if (typeof value !== 'object') value = null;
+                                break;
+                            default:
+                                value = input.value;
+                        }
+                    } catch (e) {value = null}
+                    if (!value || (value && !configItem.validator(value))) {
                         delete config[configItem.name];
+                        input.setCustomValidity("Invalid field");
+                        return
                     }
+                    config[configItem.name] = value;
+                    input.setCustomValidity("");
                 }
             }
             Promise.all([fetchConfig, fetchConfigList]).then(() => {
                 configList.forEach((configItem) => {
                     configItem.validator = eval(configItem.validatorString);
-                    input = document.getElementById(`${configItem.name}-input`);
+                    let input = document.getElementById(`${configItem.name}-input`);
+                    if (config[configItem.name]) input.value = JSON.stringify(config[configItem.name]);
                     input.addEventListener('input', inputValidator(input, configItem));
                 });
-            });
-        }
-        function submitConfig() {
-            let inputs = Array.from(document.getElementById('main-config').getElementsByTagName('input'));
-            inputs.push(document.getElementById('example-input'));
-            let config = {};
-            inputs.forEach(input => {
-                switch(input.className) {
-                    case 'number':
-                        if (input.value.length > 0) config[input.name] = parseInt(input.value);
-                    case 'text':
-                        config[input.name] = input.value;
-                }
             });
         }
         init();
