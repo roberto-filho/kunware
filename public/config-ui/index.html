@@ -1,160 +1,35 @@
 <!DOCTYPE <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Configuration UI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body{
-        margin:40px auto;
-        max-width:650px;
-        line-height:1.6;
-        font-size:18px;
-        color:rgba(20,20,20,0.8);
-        background-color: #fafafa;
-    }
-    h1,h2,h3 {
-        line-height:1.2
-    }
-    label {
-        display: inline-block;
-        width: 17em;
-    }
-    select {
-        background: inherit;
-        border: 0;
-        font-size: 16px;
-    }
-    input {
-        background-color: inherit;
-        border: solid;
-        border-color: rgba(0,0,0,0.5);
-        border-width: 0 0 1px ;
-        font-size: 16px;
-    }
-    input:invalid {
-        color: red;
-        border-color: rgba(255,0,0,0.5);
-    }
-    option {
-        background-color: inherit;
-    }
-    button {
-        margin: 5px;
-        background: rgba(191, 191, 191, 0.5);
-        border: 0;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
-        padding: 0.5em 1em;
-        font-size: 16px;
-        color:rgba(20,20,20,0.8);
-    }
-    button:active {
-        background: rgba(143, 143, 143, 0.5);
-    }
-    div.input {
-        padding: 2px;
-    }
-    </style>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Configuration UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- To avoid favicon.ico request -->
 </head>
 <body>
-    <h1>Kunware Configuration</h1>
-    <form action="/config" method="POST" id="main-config">
-        <div class="input"><label for="status">Status Code:</label><input type="number" class="number" name="status" id="status-input"></div>
-        <div class="input"><label for="seed">Data Seed:</label><input type="text" class="text" name="seed" id="seed-input"></div>
-        <div class="input"><label for="time">Minimum Response Time(ms):</label><input type="number" class="number" name="time" id="time-input"></div>
-        <div class="input"><label for="size">Array Size:</label><input type="text" class="text" name="size" id="size-input"></div>
-        <div class="input"><label for="depth">JSON Data Depth:</label><input type="number" class="number" name="depth" id="depth-input"></div>
-        <div class="input">
-            <label for="example">Use Example:</label>
-            <select class="text" name="example" id="example-input">
-                <option value="">Unset</option>
-                <option value="enabled">Enabled</option>
-                <option value="disabled">Disabled</option>
-                <option value="preferably">Preferably</option>
-            </select>
-        </div>
-        
-        <div class="input"><label for="override">Override:</label><input type="text" class="text" name="override" id="override-input"></div>
-        <div class="input"><label for="replay">Replay Config:</label><input type="number" class="number" name="replay" id="replay-input"></div>
-        <div class="input"><label for="replay-pattern">Replay Pattern:</label><input type="text" class="text" name="replay-pattern" id="replay-pattern-input"></div>
-        <div class="input"><button type="submit" id="submit-button">Submit</button></div>
-    </form>
-    <script>
-        'use strict';
-        // (function() {
-        let configPath = '';
-        let config = {};
-        let configList = [];
-        function init() {
-            configPath = window.location.pathname.replace('config/ui', 'config');
-            document.getElementById('main-config').onsubmit = (event) => {
-                event.preventDefault();
-                let submitButton = document.getElementById('submit-button');
-                submitButton.disabled = true;
-                fetch(`http://${window.location.host}${configPath}`, {
-                    body: JSON.stringify(config),
-                    headers: {'content-type': 'application/json'},
-                    method: 'POST'
-                }).then(response => response.json())
-                .then(json => {
-                    alert(`${json.set} values set, ${json.unset} values not set.`);
-                    configList.forEach((configItem) => {
-                        let input = document.getElementById(`${configItem.name}-input`);
-                        if (json.config[configItem.name]) {
-                            config[configItem.name] = json.config[configItem.name];
-                            input.value = configItem.type === 'string'? config[configItem.name] : JSON.stringify(config[configItem.name]);
-                        } else {
-                            delete config[configItem.name]
-                            input.value = '';
-                        }
-                    })
-                    submitButton.disabled = false
-                });
-            }
-            let fetchConfig = fetch(`http://${window.location.host}${configPath}`)
-                .then((response) => response.json())
-                .then((configJSON) => config = configJSON);
-            let fetchConfigList = fetch(`http://${window.location.host}${configPath}list`)
-                .then((response) => response.json())
-                .then((configListJSON) => configList = configListJSON);
-
-            function inputValidator(input, configItem) {
-                return () => {
-                    let value;
-                    try {
-                        switch (String(configItem.type)) {
-                            case 'number':
-                                value = parseFloat(input.value);
-                                break;
-                            case 'object':
-                                value = JSON.parse(input.value);
-                                if (typeof value !== 'object') value = null;
-                                break;
-                            default:
-                                value = input.value;
-                        }
-                    } catch (e) {value = null}
-                    if ((!value && input.value.length > 0) || (value && !configItem.validator(value))) {
-                        delete config[configItem.name];
-                        input.setCustomValidity("Invalid field");
-                        return
-                    }
-                    config[configItem.name] = value;
-                    input.setCustomValidity("");
-                }
-            }
-            Promise.all([fetchConfig, fetchConfigList]).then(() => {
-                configList.forEach((configItem) => {
-                    configItem.validator = eval(configItem.validatorString);
-                    let input = document.getElementById(`${configItem.name}-input`);
-                    if (config[configItem.name]) input.value = configItem.type === 'string'? config[configItem.name] : JSON.stringify(config[configItem.name]);
-                    input.addEventListener('input', inputValidator(input, configItem));
-                });
-            });
-        }
-        init();
-        // })();
-    </script>
+  <h1>Kunware Configuration</h1>
+  <form action="/config" method="POST" id="main-config">
+    <div class="input"><label for="status">Status Code:</label><input type="number" class="number" name="status" id="status-input"></div>
+    <div class="input"><label for="seed">Data Seed:</label><input type="text" class="text" name="seed" id="seed-input"></div>
+    <div class="input"><label for="time">Minimum Response Time(ms):</label><input type="number" class="number" name="time" id="time-input"></div>
+    <div class="input"><label for="size">Array Size:</label><input type="text" class="text" name="size" id="size-input"></div>
+    <div class="input"><label for="depth">JSON Data Depth:</label><input type="number" class="number" name="depth" id="depth-input"></div>
+    <div class="input">
+      <label for="example">Use Example:</label>
+      <select class="text" name="example" id="example-input">
+        <option value="">Unset</option>
+        <option value="enabled">Enabled</option>
+        <option value="disabled">Disabled</option>
+        <option value="preferably">Preferably</option>
+      </select>
+    </div>
+    <div class="input"><label for="override">Override:</label><input type="text" class="text" name="override" id="override-input"></div>
+    <div class="input"><label for="replay">Replay Config:</label><input type="number" class="number" name="replay" id="replay-input"></div>
+    <div class="input"><label for="replay-pattern">Replay Pattern:</label><input type="text" class="text" name="replay-pattern" id="replay-pattern-input"></div>
+    <div class="input"><button type="submit" id="submit-button">Submit</button></div>
+  </form>
+  <script src="script.js"></script>
 </body>
 </html>

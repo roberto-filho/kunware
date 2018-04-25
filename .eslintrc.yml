@@ -11,7 +11,7 @@ rules:
           ignoreUrls: true
     new-cap:
         - 0
-    require-jsdoc:
+    require-jsdoc: #TODO: enable this after fixing affected codes
         - 0
     eqeqeq:
         - 2
@@ -35,3 +35,8 @@ rules:
         - never
     space-in-parens:
         - 2
+    indent:
+        - 2
+        - 2
+    no-invalid-this: #TODO: enable this after fixing affected codes
+        - 0

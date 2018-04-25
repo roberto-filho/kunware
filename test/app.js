@@ -124,7 +124,7 @@ describe('The Kunware server', function() {
         assert.equal(res.body.message, 'No schema example found for path /v2/user/someuser');
       });
     });
-});
+  });
 
   it('should replay X-Mock-* headers', function() {
     return request(url + '/v2/pet/4', {
