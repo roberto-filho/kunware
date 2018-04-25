@@ -12,7 +12,7 @@ function createDefaultApp(apis, options) {
   app.get('/api-docs', kunware.apiDocs(apis));
   if (options.ui !== false) app.use('/ui', kunware.ui);
 
-  if (options['config-back'] !== false) app.use(kunware.config.configRouter(options));
+  if (options['config-back'] !== false) app.use(kunware.config(options));
 
   if (options.killable || options.k) app.use('/kill', kunware.kill);
 
