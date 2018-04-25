@@ -52,9 +52,19 @@ describe('The configuration middleware', function() {
     });
 
     it('should have a POST /config endpoint', function() {
+      config.__set__('config.status', 500);
       return request(`http://localhost:${port}/config`, {method: 'POST', json: {status: 200}}).then(function(res) {
         assert.equal(config.__get__('config.status'), 200);
         assert.equal(res.body.config.status, 200);
+        assert.equal(res.statusCode, 200);
+      });
+    });
+
+    it('should have validate POST requests', function() {
+      return request(`http://localhost:${port}/config`, {method: 'POST', json: {
+        'status': 20, 'seed': 'ab', 'time': 500, 'size': 'hello', 'depth': -5,
+        'example': 'on', 'override': {somePath: true}, 'replay': 5, 'replay-pattern': 'config'}}).then(function(res) {
+        assert.equal(res.body.set, 5);
         assert.equal(res.statusCode, 200);
       });
     });
@@ -65,6 +75,7 @@ describe('The configuration middleware', function() {
     const port = 16000;
 
     before(function(done) {
+      config.__set__('config', {});
       app.use(config({'config-ui': false}));
       app.listen(port, done);
     });
