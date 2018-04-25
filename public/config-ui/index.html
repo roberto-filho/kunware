@@ -100,10 +100,13 @@
                 .then(json => {
                     alert(`${json.set} values set, ${json.unset} values not set.`);
                     configList.forEach((configItem) => {
+                        let input = document.getElementById(`${configItem.name}-input`);
                         if (json.config[configItem.name]) {
                             config[configItem.name] = json.config[configItem.name];
+                            input.value = configItem.type === 'string'? config[configItem.name] : JSON.stringify(config[configItem.name]);
                         } else {
                             delete config[configItem.name]
+                            input.value = '';
                         }
                     })
                     submitButton.disabled = false
@@ -132,7 +135,7 @@
                                 value = input.value;
                         }
                     } catch (e) {value = null}
-                    if (!value || (value && !configItem.validator(value))) {
+                    if ((!value && input.value.length > 0) || (value && !configItem.validator(value))) {
                         delete config[configItem.name];
                         input.setCustomValidity("Invalid field");
                         return
@@ -145,7 +148,7 @@
                 configList.forEach((configItem) => {
                     configItem.validator = eval(configItem.validatorString);
                     let input = document.getElementById(`${configItem.name}-input`);
-                    if (config[configItem.name]) input.value = JSON.stringify(config[configItem.name]);
+                    if (config[configItem.name]) input.value = configItem.type === 'string'? config[configItem.name] : JSON.stringify(config[configItem.name]);
                     input.addEventListener('input', inputValidator(input, configItem));
                 });
             });
