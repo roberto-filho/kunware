@@ -1,0 +1,49 @@
+body{
+  margin:40px auto;
+  max-width:650px;
+  line-height:1.6;
+  font-size:18px;
+  color:rgba(20,20,20,0.8);
+  background-color: #fafafa;
+}
+h1,h2,h3 {
+  line-height:1.2
+}
+label {
+  display: inline-block;
+  width: 17em;
+}
+select {
+  background: inherit;
+  border: 0;
+  font-size: 16px;
+}
+input {
+  background-color: inherit;
+  border: solid;
+  border-color: rgba(0,0,0,0.5);
+  border-width: 0 0 1px ;
+  font-size: 16px;
+}
+input:invalid {
+  color: red;
+  border-color: rgba(255,0,0,0.5);
+}
+option {
+  background-color: inherit;
+}
+button {
+  margin: 5px;
+  background: rgba(191, 191, 191, 0.5);
+  border: 0;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+  padding: 0.5em 1em;
+  font-size: 16px;
+  color:rgba(20,20,20,0.8);
+}
+button:active {
+  background: rgba(143, 143, 143, 0.5);
+}
+div.input {
+  padding: 2px;
+}

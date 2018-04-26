@@ -1,8 +1,8 @@
-let createApp = require( '../createDefaultApp' );
-let request = require( './request' );
-let assert = require( 'assert' );
+let createApp = require('../createDefaultApp');
+let request = require('./request');
+let assert = require('assert');
 
-describe( 'The Kunware server (with memory module)', function() {
+describe('The Kunware server (with memory module)', function() {
   let url = 'http://localhost:7374';
   let server;
   let options = {
@@ -12,41 +12,41 @@ describe( 'The Kunware server (with memory module)', function() {
     },
   };
 
-  before( function() {
-    server = createApp( 'test/petstore.json', {memory: true} ).listen( 7374 );
-  } );
+  before(function() {
+    server = createApp('test/petstore.json', {memory: true}).listen(7374);
+  });
 
-  it( 'should remember generated objects by ID', function() {
+  it('should remember generated objects by ID', function() {
     let customer;
-    return request( url + '/v2/pet/5', options ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
+    return request(url + '/v2/pet/5', options).then(function(res) {
+      assert.equal(res.statusCode, 200);
       customer = res.body;
-      return request( url + '/v2/pet/5', options );
-    } ).then( function( res ) {
-      assert.deepEqual( res.body, customer );
-    } );
-  } );
+      return request(url + '/v2/pet/5', options);
+    }).then(function(res) {
+      assert.deepEqual(res.body, customer);
+    });
+  });
 
-  it( 'should delete objects by ID', function() {
-    return request( url + '/v2/pet/6', options ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-      return request( url + '/v2/pet/6', {
+  it('should delete objects by ID', function() {
+    return request(url + '/v2/pet/6', options).then(function(res) {
+      assert.equal(res.statusCode, 200);
+      return request(url + '/v2/pet/6', {
         method: 'DELETE',
         api_key: 'siegmeyer',
-      } );
-    } ).then( function( res ) {
-      return request( url + '/v2/pet/6', options );
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 404 );
-    } );
-  } );
+      });
+    }).then(function(res) {
+      return request(url + '/v2/pet/6', options);
+    }).then(function(res) {
+      assert.equal(res.statusCode, 404);
+    });
+  });
 
-  it.skip( 'should update objects by ID', function() {
+  it.skip('should update objects by ID', function() {
 
-  } );
+  });
 
-  it( 'should create objects', function() {
-    return request( url + '/v2/pet', {
+  it('should create objects', function() {
+    return request(url + '/v2/pet', {
       method: 'POST',
       body: {
         'id': 4,
@@ -67,12 +67,12 @@ describe( 'The Kunware server (with memory module)', function() {
         'status': 'available',
       },
       json: true,
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+    }).then(function(res) {
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  after( function() {
-    if ( server ) server.close();
-  } );
-} );
+  after(function() {
+    if (server) server.close();
+  });
+});

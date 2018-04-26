@@ -1,26 +1,28 @@
-let express = require( 'express' );
-let kunware = require( './' );
+let express = require('express');
+let kunware = require('./');
 let generate = kunware.generate;
 let generate2 = kunware.generate2;
 
 module.exports = createDefaultApp;
 
-function createDefaultApp( apis, options ) {
+function createDefaultApp(apis, options) {
   options = options || {};
   let app = express();
 
-  app.get( '/api-docs', kunware.apiDocs( apis ) );
-  if (options.ui !== false) app.use( '/ui', kunware.ui );
+  app.get('/api-docs', kunware.apiDocs(apis));
+  if (options.ui !== false) app.use('/ui', kunware.ui);
 
-  if ( options.killable || options.k ) app.use( '/kill', kunware.kill );
+  if (options['config-back'] !== false) app.use(kunware.config(options));
+
+  if (options.killable || options.k) app.use('/kill', kunware.kill);
 
   app.use(
-    kunware.swagger( apis, app ),
+    kunware.swagger(apis, app),
     kunware.replay(),
     kunware.chance,
     kunware.time,
     kunware.status,
-    kunware.mock( [
+    kunware.mock([
       generate.id,
       generate2.birthday,
       generate2.email,
@@ -44,14 +46,14 @@ function createDefaultApp( apis, options ) {
       generate.boolean,
       generate.array,
       generate.object,
-    ], options ),
+    ], options),
     kunware.override
   );
 
-  if ( options.memory ) {
+  if (options.memory) {
     app.use(
       kunware.classify,
-      kunware.memory( options )
+      kunware.memory(options)
     );
   }
 

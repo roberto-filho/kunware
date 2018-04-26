@@ -1,8 +1,8 @@
-let createApp = require( '../createDefaultApp' );
-let request = require( './request' );
-let assert = require( 'assert' );
+let createApp = require('../createDefaultApp');
+let request = require('./request');
+let assert = require('assert');
 
-describe( 'The Kunware server', function() {
+describe('The Kunware server', function() {
   let url = 'http://localhost:7373';
   let server;
   let options = {
@@ -12,37 +12,37 @@ describe( 'The Kunware server', function() {
     },
   };
 
-  before( function() {
-    server = createApp( 'test/petstore.json' ).listen( 7373 );
-  } );
+  before(function() {
+    server = createApp('test/petstore.json').listen(7373);
+  });
 
-  it( 'should handle non existent paths', function() {
-    return request( url + '/siegmeyer', options ).then( function( res ) {
-      assert.ok( res.body.message.match( /not found/i ) );
-      assert.equal( res.statusCode, 404 );
-    } );
-  } );
+  it('should handle non existent paths', function() {
+    return request(url + '/siegmeyer', options).then(function(res) {
+      assert.ok(res.body.message.match(/not found/i));
+      assert.equal(res.statusCode, 404);
+    });
+  });
 
-  it( 'should publish a Swagger UI', function() {
-    return request( url + '/ui' ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+  it('should publish a Swagger UI', function() {
+    return request(url + '/ui').then(function(res) {
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  it( 'should publish Swagger UI assets', function() {
-    return request( url + '/ui/swagger-ui.js' ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+  it('should publish Swagger UI assets', function() {
+    return request(url + '/ui/swagger-ui.js').then(function(res) {
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  it( 'should generate mock data', function() {
-    return request( url + '/v2/pet/findByStatus?status=available' ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+  it('should generate mock data', function() {
+    return request(url + '/v2/pet/findByStatus?status=available').then(function(res) {
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  it( 'should accept objects', function() {
-    return request( url + '/v2/pet', {
+  it('should accept objects', function() {
+    return request(url + '/v2/pet', {
       method: 'POST',
       body: {
         'id': 4,
@@ -63,30 +63,30 @@ describe( 'The Kunware server', function() {
         'status': 'available',
       },
       json: true,
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+    }).then(function(res) {
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  it( 'should respond after a specified time', function() {
-    this.timeout( 10000 );
+  it('should respond after a specified time', function() {
+    this.timeout(10000);
 
     let t0 = Date.now();
 
-    return request( url + '/v2/pet/4', {
+    return request(url + '/v2/pet/4', {
       headers: {
         'X-Mock-Time': 1000,
         'api_key': 'siegmeyer',
       },
       json: true,
-    } ).then( function( res ) {
+    }).then(function(res) {
       let t1 = Date.now();
-      assert.ok( t1 - t0 > 1000 );
-    } );
-  } );
+      assert.ok(t1 - t0 > 1000);
+    });
+  });
 
   describe('example', function() {
-    it( 'should respond with the example', function() {
+    it('should respond with the example', function() {
       return request(url + '/v2/pet/4', {
         headers: {
           'X-Mock-Example': 'enabled',
@@ -99,7 +99,7 @@ describe( 'The Kunware server', function() {
       });
     });
 
-    it( 'should proceed even with missing schema example using preferably', function() {
+    it('should proceed even with missing schema example using preferably', function() {
       return request(url + '/v2/user/someuser', {
         headers: {
           'X-Mock-Example': 'preferably',
@@ -112,7 +112,7 @@ describe( 'The Kunware server', function() {
       });
     });
 
-    it( 'should throw an error with enabled example but missing schema example', function() {
+    it('should throw an error with enabled example but missing schema example', function() {
       return request(url + '/v2/user/someuser', {
         headers: {
           'X-Mock-Example': 'enabled',
@@ -124,39 +124,39 @@ describe( 'The Kunware server', function() {
         assert.equal(res.body.message, 'No schema example found for path /v2/user/someuser');
       });
     });
-});
+  });
 
-  it( 'should replay X-Mock-* headers', function() {
-    return request( url + '/v2/pet/4', {
+  it('should replay X-Mock-* headers', function() {
+    return request(url + '/v2/pet/4', {
       headers: {
         'X-Mock-Replay': 3,
         'X-Mock-Status': 404,
         'api_key': 'siegmeyer',
       },
       json: true,
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 404 );
-    } ).then( function() {
-      return request( url + '/v2/pet/4', options );
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 404 );
-    } ).then( function() {
-      return request( url + '/v2/pet/4', options );
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 404 );
-    } ).then( function() {
-      return request( url + '/v2/pet/4', options );
-    } ).then( function( res ) {
-      assert.equal( res.statusCode, 404 );
-    } ).then( function() {
-      return request( url + '/v2/pet/4', options );
-    } ).then( function( res ) {
-      assert.ok( res.body.id );
-      assert.equal( res.statusCode, 200 );
-    } );
-  } );
+    }).then(function(res) {
+      assert.equal(res.statusCode, 404);
+    }).then(function() {
+      return request(url + '/v2/pet/4', options);
+    }).then(function(res) {
+      assert.equal(res.statusCode, 404);
+    }).then(function() {
+      return request(url + '/v2/pet/4', options);
+    }).then(function(res) {
+      assert.equal(res.statusCode, 404);
+    }).then(function() {
+      return request(url + '/v2/pet/4', options);
+    }).then(function(res) {
+      assert.equal(res.statusCode, 404);
+    }).then(function() {
+      return request(url + '/v2/pet/4', options);
+    }).then(function(res) {
+      assert.ok(res.body.id);
+      assert.equal(res.statusCode, 200);
+    });
+  });
 
-  after( function() {
-    if ( server ) server.close();
-  } );
-} );
+  after(function() {
+    if (server) server.close();
+  });
+});

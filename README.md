@@ -25,6 +25,9 @@ Options:
   -p, --port <port>          Set server port, default is 8000
   -w, --watch                Watch mode: Restart on Swagger changes
   -k, --killable             Publish /kill endpoint to stop the service
+      --no-ui                Disables the swagger ui from running
+      --no-config-ui         Disables the configuration ui from running
+      --no-config-back       Disables the configuration feature
       --config <config file> YAML file containing the configuration (default is config.yaml if it exists)
       --example <enabled|disabled|preferably>
                              Whether to use the examples or not or to use example if there is one
