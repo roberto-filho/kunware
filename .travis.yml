@@ -6,7 +6,7 @@ cache:
     - "node_modules"
 jobs:
   include:
-    - stage: "Run eslint"
+    - stage: "Run linters"
       node_js: "node"
       script: "npm run lint"
     - stage: "tests & code coverage"

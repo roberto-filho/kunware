@@ -5,6 +5,8 @@
 		"order-alphabetical",
 		"box-model",
 		"display-property-grouping",
-		"errors"
+		"errors",
+		"duplicate-properties",
+		"text-indent"
 	]
 }

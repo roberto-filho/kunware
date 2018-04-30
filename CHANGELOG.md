@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.0
+
+- Add configuration backend and frontend
+- Add npm-shrinkwrap.json
+
 ## v1.2.0
 
 - Add configuration through a yaml file
