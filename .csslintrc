@@ -1,0 +1,12 @@
+{
+	"errors": [
+		"known-properties",
+		"adjoining-classes",
+		"order-alphabetical",
+		"box-model",
+		"display-property-grouping",
+		"errors",
+		"duplicate-properties",
+		"text-indent"
+	]
+}
