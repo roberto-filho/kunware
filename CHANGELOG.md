@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.1 (to be released)
+
+- Fix replay pattern bug
+- Fix ordering of status to always use the default response
+
 ## v1.3.0
 
 - Add configuration backend and frontend
